@@ -1,0 +1,14 @@
+export const features = {
+  campaigns: true,
+  analyticsV2: false,
+  multiOrg: false,
+  calling: true,
+  callingLive: false,
+  virtualNumbers: true,
+} as const;
+
+export type FeatureKey = keyof typeof features;
+
+export function isFeatureEnabled(key: FeatureKey): boolean {
+  return features[key];
+}

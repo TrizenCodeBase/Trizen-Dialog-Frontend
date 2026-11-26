@@ -1,0 +1,294 @@
+import { lazy, Suspense } from 'react';
+import {
+  createBrowserRouter,
+  createHashRouter,
+  Outlet,
+  RouterProvider,
+} from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { RouteErrorBoundary } from '@/components/shared/RouteErrorBoundary';
+import { ProtectedRoute } from '@/features/auth/guards/ProtectedRoute';
+import { AdminRoute } from '@/features/auth/guards/AdminRoute';
+import { ManagerRoute } from '@/features/auth/guards/ManagerRoute';
+import { PlatformProtectedRoute } from '@/features/platform-admin/guards/PlatformProtectedRoute';
+import { PlatformAdminLayout } from '@/features/platform-admin/components/PlatformAdminLayout';
+import { shouldUseHashRouter } from '@/lib/router-mode';
+
+const LandingPage = lazy(() =>
+  import('@/features/landing/LandingPage').then((m) => ({ default: m.LandingPage })),
+);
+const LoginPage = lazy(() =>
+  import('@/features/auth/pages/LoginPage').then((m) => ({ default: m.LoginPage })),
+);
+const OverviewPage = lazy(() =>
+  import('@/features/dashboard/pages/OverviewPage').then((m) => ({ default: m.OverviewPage })),
+);
+const MessagesPage = lazy(() =>
+  import('@/features/messages/pages/MessagesPage').then((m) => ({ default: m.MessagesPage })),
+);
+const InboxPage = lazy(() =>
+  import('@/features/inbox/pages/InboxPage').then((m) => ({ default: m.InboxPage })),
+);
+const CallsPage = lazy(() =>
+  import('@/features/calls/pages/CallsPage').then((m) => ({ default: m.CallsPage })),
+);
+const ConversationPage = lazy(() =>
+  import('@/features/calls/pages/ConversationPage').then((m) => ({
+    default: m.ConversationPage,
+  })),
+);
+const ContactDetailsPage = lazy(() =>
+  import('@/features/calls/pages/ContactDetailsPage').then((m) => ({
+    default: m.ContactDetailsPage,
+  })),
+);
+const CallNotificationsPage = lazy(() =>
+  import('@/features/calls/pages/CallNotificationsPage').then((m) => ({
+    default: m.CallNotificationsPage,
+  })),
+);
+const CallingSettingsPage = lazy(() =>
+  import('@/features/calls/pages/CallingSettingsPage').then((m) => ({
+    default: m.CallingSettingsPage,
+  })),
+);
+const VirtualNumbersPage = lazy(() =>
+  import('@/features/voice/pages/VirtualNumbersPage').then((m) => ({
+    default: m.VirtualNumbersPage,
+  })),
+);
+const GetNumberPage = lazy(() =>
+  import('@/features/voice/pages/GetNumberPage').then((m) => ({ default: m.GetNumberPage })),
+);
+const NumberDetailsPage = lazy(() =>
+  import('@/features/voice/pages/NumberDetailsPage').then((m) => ({
+    default: m.NumberDetailsPage,
+  })),
+);
+const VoiceApiPage = lazy(() =>
+  import('@/features/voice/pages/VoiceApiPage').then((m) => ({ default: m.VoiceApiPage })),
+);
+const VoiceWebhooksPage = lazy(() =>
+  import('@/features/voice/pages/VoiceWebhooksPage').then((m) => ({
+    default: m.VoiceWebhooksPage,
+  })),
+);
+const CallingLayout = lazy(() =>
+  import('@/features/calls/CallingLayout').then((m) => ({ default: m.CallingLayout })),
+);
+const CampaignPage = lazy(() =>
+  import('@/features/campaigns/pages/CampaignPage').then((m) => ({ default: m.CampaignPage })),
+);
+const CampaignHistoryPage = lazy(() =>
+  import('@/features/campaigns/pages/CampaignHistoryPage').then((m) => ({
+    default: m.CampaignHistoryPage,
+  })),
+);
+const CampaignHistoryDetailPage = lazy(() =>
+  import('@/features/campaigns/pages/CampaignHistoryDetailPage').then((m) => ({
+    default: m.CampaignHistoryDetailPage,
+  })),
+);
+const TemplatesPage = lazy(() =>
+  import('@/features/templates/pages/TemplatesPage').then((m) => ({ default: m.TemplatesPage })),
+);
+const CreateTemplatePage = lazy(() =>
+  import('@/features/templates/pages/CreateTemplatePage').then((m) => ({
+    default: m.CreateTemplatePage,
+  })),
+);
+const EditTemplatePage = lazy(() =>
+  import('@/features/templates/pages/EditTemplatePage').then((m) => ({
+    default: m.EditTemplatePage,
+  })),
+);
+const IntegrationsPage = lazy(() =>
+  import('@/features/integrations/pages/IntegrationsPage').then((m) => ({
+    default: m.IntegrationsPage,
+  })),
+);
+const ProfilePage = lazy(() =>
+  import('@/features/profile/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })),
+);
+const WhatsAppPage = lazy(() =>
+  import('@/features/whatsapp/pages/WhatsAppPage').then((m) => ({ default: m.WhatsAppPage })),
+);
+const ApiKeysPage = lazy(() =>
+  import('@/features/api-keys/pages/ApiKeysPage').then((m) => ({ default: m.ApiKeysPage })),
+);
+const PrivacyPage = lazy(() =>
+  import('@/features/legal/pages/PrivacyPage').then((m) => ({ default: m.PrivacyPage })),
+);
+const TermsPage = lazy(() =>
+  import('@/features/legal/pages/TermsPage').then((m) => ({ default: m.TermsPage })),
+);
+const NotFoundPage = lazy(() =>
+  import('@/features/legal/pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
+);
+const PlatformLoginPage = lazy(() =>
+  import('@/features/platform-admin/pages/PlatformLoginPage').then((m) => ({
+    default: m.PlatformLoginPage,
+  })),
+);
+const OrganizationsPage = lazy(() =>
+  import('@/features/platform-admin/pages/OrganizationsPage').then((m) => ({
+    default: m.OrganizationsPage,
+  })),
+);
+const OrganizationDetailPage = lazy(() =>
+  import('@/features/platform-admin/pages/OrganizationDetailPage').then((m) => ({
+    default: m.OrganizationDetailPage,
+  })),
+);
+const WhatsAppAccountDetailPage = lazy(() =>
+  import('@/features/platform-admin/pages/WhatsAppAccountDetailPage').then((m) => ({
+    default: m.WhatsAppAccountDetailPage,
+  })),
+);
+
+function PageLoader() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-40 w-full" />
+    </div>
+  );
+}
+
+function withSuspense(element: React.ReactNode) {
+  return (
+    <RouteErrorBoundary>
+      <Suspense fallback={<PageLoader />}>{element}</Suspense>
+    </RouteErrorBoundary>
+  );
+}
+
+function AuthenticatedLayout() {
+  return (
+    <ProtectedRoute>
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
+    </ProtectedRoute>
+  );
+}
+
+const routes = [
+  { path: '/', element: withSuspense(<LandingPage />) },
+  { path: '/pricing', element: withSuspense(<LandingPage />) },
+  { path: '/login', element: withSuspense(<LoginPage />) },
+  { path: '/privacy', element: withSuspense(<PrivacyPage />) },
+  { path: '/terms', element: withSuspense(<TermsPage />) },
+  { path: '/platform/login', element: withSuspense(<PlatformLoginPage />) },
+  {
+    path: '/platform',
+    element: withSuspense(
+      <PlatformProtectedRoute>
+        <PlatformAdminLayout>
+          <Outlet />
+        </PlatformAdminLayout>
+      </PlatformProtectedRoute>,
+    ),
+    children: [
+      { index: true, element: withSuspense(<OrganizationsPage />) },
+      {
+        path: 'organizations/:id',
+        element: withSuspense(<OrganizationDetailPage />),
+      },
+      {
+        path: 'organizations/:id/whatsapp-accounts/:accountId',
+        element: withSuspense(<WhatsAppAccountDetailPage />),
+      },
+    ],
+  },
+  {
+    element: <AuthenticatedLayout />,
+    children: [
+      { path: '/overview', element: withSuspense(<OverviewPage />) },
+      { path: '/templates', element: withSuspense(<TemplatesPage />) },
+      {
+        path: '/templates/new',
+        element: withSuspense(
+          <ManagerRoute>
+            <CreateTemplatePage />
+          </ManagerRoute>,
+        ),
+      },
+      {
+        path: '/templates/:templateId/edit',
+        element: withSuspense(
+          <ManagerRoute>
+            <EditTemplatePage />
+          </ManagerRoute>,
+        ),
+      },
+      { path: '/messages', element: withSuspense(<MessagesPage />) },
+      { path: '/inbox', element: withSuspense(<InboxPage />) },
+      { path: '/inbox/:conversationId', element: withSuspense(<InboxPage />) },
+      {
+        element: withSuspense(<CallingLayout />),
+        children: [
+          { path: '/calls', element: withSuspense(<CallsPage />) },
+          {
+            path: '/calls/conversations/:contactId',
+            element: withSuspense(<ConversationPage />),
+          },
+          {
+            path: '/calls/contacts/:contactId',
+            element: withSuspense(<ContactDetailsPage />),
+          },
+          {
+            path: '/calls/notifications',
+            element: withSuspense(<CallNotificationsPage />),
+          },
+          {
+            path: '/calls/settings',
+            element: withSuspense(<CallingSettingsPage />),
+          },
+        ],
+      },
+      { path: '/virtual-numbers', element: withSuspense(<VirtualNumbersPage />) },
+      { path: '/virtual-numbers/get', element: withSuspense(<GetNumberPage />) },
+      {
+        path: '/virtual-numbers/:numberId',
+        element: withSuspense(<NumberDetailsPage />),
+      },
+      { path: '/developer/voice', element: withSuspense(<VoiceApiPage />) },
+      { path: '/developer/webhooks', element: withSuspense(<VoiceWebhooksPage />) },
+      { path: '/campaigns', element: withSuspense(<CampaignPage />) },
+      { path: '/campaigns/history', element: withSuspense(<CampaignHistoryPage />) },
+      {
+        path: '/campaigns/history/:campaignId',
+        element: withSuspense(<CampaignHistoryDetailPage />),
+      },
+      { path: '/integrations', element: withSuspense(<IntegrationsPage />) },
+      { path: '/profile', element: withSuspense(<ProfilePage />) },
+      {
+        path: '/whatsapp',
+        element: withSuspense(
+          <AdminRoute>
+            <WhatsAppPage />
+          </AdminRoute>,
+        ),
+      },
+      {
+        path: '/api-keys',
+        element: withSuspense(
+          <AdminRoute>
+            <ApiKeysPage />
+          </AdminRoute>,
+        ),
+      },
+    ],
+  },
+  { path: '*', element: withSuspense(<NotFoundPage />) },
+];
+
+export const router = shouldUseHashRouter()
+  ? createHashRouter(routes)
+  : createBrowserRouter(routes);
+
+export function AppRouter() {
+  return <RouterProvider router={router} />;
+}

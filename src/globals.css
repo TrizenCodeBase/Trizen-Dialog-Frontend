@@ -1,0 +1,177 @@
+/* Tailwind entry — the only stylesheet. Theme tokens for shadcn/ui. */
+@import 'tailwindcss';
+@config '../tailwind.config.ts';
+
+@layer base {
+  :root {
+    --sidebar-width: 13.5rem;
+    --sidebar-width-icon: 3.25rem;
+
+    --background: 150 20% 98.5%;
+    --foreground: 160 30% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 30% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 30% 8%;
+    --primary: 152 69% 31%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 12% 94%;
+    --secondary-foreground: 160 25% 14%;
+    --muted: 150 12% 94%;
+    --muted-foreground: 160 8% 38%;
+    --accent: 150 14% 93%;
+    --accent-foreground: 160 25% 14%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 150 10% 88%;
+    --input: 150 10% 88%;
+    --ring: 152 69% 31%;
+    --radius: 0.875rem;
+    --sidebar-background: 150 16% 97%;
+    --sidebar-foreground: 160 25% 14%;
+    --sidebar-primary: 152 69% 31%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 12% 92%;
+    --sidebar-accent-foreground: 160 30% 10%;
+    --sidebar-border: 150 10% 88%;
+    --sidebar-ring: 152 69% 31%;
+  }
+
+  .dark {
+    --background: 160 28% 6%;
+    --foreground: 150 20% 97%;
+    --card: 160 24% 9%;
+    --card-foreground: 150 20% 97%;
+    --popover: 160 24% 9%;
+    --popover-foreground: 150 20% 97%;
+    --primary: 152 58% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 16% 16%;
+    --secondary-foreground: 150 20% 97%;
+    --muted: 160 16% 16%;
+    --muted-foreground: 150 8% 68%;
+    --accent: 160 16% 16%;
+    --accent-foreground: 150 20% 97%;
+    --destructive: 0 63% 35%;
+    --destructive-foreground: 150 20% 97%;
+    --border: 160 14% 18%;
+    --input: 160 14% 18%;
+    --ring: 152 58% 42%;
+    --sidebar-background: 160 26% 7%;
+    --sidebar-foreground: 150 20% 97%;
+    --sidebar-primary: 152 55% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 14% 14%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 160 12% 16%;
+    --sidebar-ring: 152 55% 45%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background font-sans text-[15px] leading-relaxed text-foreground antialiased;
+    font-feature-settings: 'ss01' on, 'cv11' on;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight text-foreground;
+  }
+}
+
+@layer components {
+  .auth-shell-bg {
+    background:
+      radial-gradient(ellipse 80% 55% at 50% -10%, hsl(var(--primary) / 0.16), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 100%, hsl(152 40% 40% / 0.08), transparent 50%),
+      radial-gradient(ellipse 40% 35% at 0% 80%, hsl(160 30% 50% / 0.06), transparent 45%),
+      hsl(var(--background));
+  }
+}
+
+/* Landing page motion — scoped so the rest of the app is unchanged */
+@layer utilities {
+  .landing-fade-up {
+    animation: landing-fade-up 0.7s ease-out both;
+  }
+
+  .landing-fade-up-delay-1 {
+    animation-delay: 0.08s;
+  }
+
+  .landing-fade-up-delay-2 {
+    animation-delay: 0.16s;
+  }
+
+  .landing-fade-up-delay-3 {
+    animation-delay: 0.24s;
+  }
+
+  .landing-chat-float {
+    animation: landing-chat-float 7s ease-in-out infinite;
+  }
+
+  .landing-msg {
+    animation: landing-msg-in 0.55s ease-out both;
+  }
+
+  .landing-msg-1 {
+    animation-delay: 0.35s;
+  }
+
+  .landing-msg-2 {
+    animation-delay: 0.55s;
+  }
+
+  .landing-msg-3 {
+    animation-delay: 0.75s;
+  }
+
+  .landing-cta-hover {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .landing-cta-hover:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-chat-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes landing-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
